@@ -40,4 +40,4 @@ jobs:
                   cat /etc/os-release
                   whoami
                   sudo su
-                  apt get update | apt get upgrade
+                  whoami
