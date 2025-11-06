@@ -30,3 +30,12 @@ jobs:
               with:
                   name: nextjs-artifact
                   path: ./dist
+    container-home-ubunto-vm:
+        name: u24
+        runs-on: self-hosted
+        steps:
+            - name: show info
+              run: |
+                  ps -ef
+                  cat /etc/os-release
+                  whoami
