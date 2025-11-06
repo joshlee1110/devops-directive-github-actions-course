@@ -16,7 +16,7 @@ jobs:
         container:
             image: node:trixie
         steps:
-            - name: nodejs version
+            - name: node 包版上傳
               run: |
                   node -v
                   npm create vite@latest .
