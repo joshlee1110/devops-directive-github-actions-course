@@ -40,6 +40,7 @@ jobs:
                   #cat /etc/os-release
 
                   whoami
-                  echo 'update'
-                  sudo apt-get update
-                  sudo apt install nodejs -y
+                  echo 'Do things in u24'
+                  cd /
+                  ls
+                  df -kh
