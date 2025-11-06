@@ -39,5 +39,5 @@ jobs:
                   ps -ef
                   cat /etc/os-release
                   whoami
-                  sudo su
+                  sudo -i
                   whoami
