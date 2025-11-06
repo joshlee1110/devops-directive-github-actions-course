@@ -19,3 +19,5 @@ jobs:
             - name: nodejs version
               run: |
                   node -v
+                  npx create-next-app@latest .
+                  npm run build
