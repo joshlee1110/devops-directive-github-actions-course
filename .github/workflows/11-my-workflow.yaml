@@ -19,7 +19,8 @@ jobs:
             - name: nodejs version
               run: |
                   node -v
-                  git clone https://github.com/joshlee1110/iphone-clone.git
+                  npm create vite@latest .
+                  npm install
                   npm run build
                   ls
                   pwd
