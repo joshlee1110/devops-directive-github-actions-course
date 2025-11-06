@@ -19,7 +19,7 @@ jobs:
             - name: nodejs version
               run: |
                   node -v
-                  npx create-next-app@latest .
+                  git clone https://github.com/joshlee1110/iphone-clone.git
                   npm run build
                   ls
                   pwd
@@ -28,4 +28,4 @@ jobs:
 
               with:
                   name: nextjs-artifact
-                  path: ./*.json
+                  path: ./build
