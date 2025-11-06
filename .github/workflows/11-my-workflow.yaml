@@ -1,4 +1,4 @@
-name: Runner Type
+name: Runner Type In My Workshop
 on:
     workflow_dispatch:
 jobs:
@@ -9,3 +9,4 @@ jobs:
             - name: pwsh
               run: |
                   $PSVersionTable
+                  get-wmiObject -Class Win32_OperatingSystem | fl *
