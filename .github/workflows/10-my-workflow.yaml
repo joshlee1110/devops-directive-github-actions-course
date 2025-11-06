@@ -3,26 +3,61 @@ name: My Workflow
 on:
     workflow_dispatch:
 
+# on:
+#     push:
+#         branches:
+#             - 'example-branch/*'
+env:
+    WORKFLOW_VAR: I_AM_WORKFLOW_SCOPED
+
 jobs:
     say_my_word:
         runs-on: ubuntu-24.04
         steps:
             - run: echo "Go to Surfing"
+
     say-surf-in-python:
         runs-on: ubuntu-24.04
         steps:
             - run: print("Hello Surfing")
               shell: python
+
     say-surf-in-pwsh:
         runs-on: windows-latest
+        outputs:
+            volume: ${{ steps.generate-volume.outputs.volume }}
+
+        env:
+            JOB_VAR: I_AM_JOB_1_SCOPED
         needs:
             - say-surf-in-python
             - say_my_word
             - say-surf-is-js
         steps:
             - run: Write-Host 'say-surf-in-pwsh no shat'
-            - run: pwd; Get-Process | ft -AutoSize
+            - name: echo var
+              env:
+                  STEP_VAR: STEP VAR IN ECHO VAR
+              run: |
+                  $STEP_VAR
+                  $WORKFLOW_VAR
+                  $JOB_VAR
+            - run: |
+                  echo "WORKFLOW_VAR: $WORKFLOW_VAR"   # visible
+                  echo "JOB_VAR:      $JOB_VAR"        # visible
+                  echo "STEP_VAR:     $STEP_VAR"       # visible only here
+            - name: set var
+              id: generate-volume
+              run: |
+                  $volume_value = (Get-Process | Select-Object -First 1).Id
 
+                  # 2. ❗ 關鍵修正：將 'key=value' 格式的字串寫入 $GITHUB_OUTPUT
+                  $output_line = "volume=$volume_value"
+
+                  # 3. 使用 Out-File 將格式正確的字串寫入 $GITHUB_OUTPUT 檔案
+                  $output_line | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+
+                  Write-Host "成功寫入 $env:GITHUB_OUTPUT: $output_line"
     say-surf-is-js:
         runs-on: ubuntu-24.04
         steps:
@@ -30,3 +65,53 @@ jobs:
               # - uses: actions/hello-world-javascript-action@v1 # This would work, but it would be less stable and less secure:
               with:
                   who-to-greet: 'from an action in the GitHub Action marketplace! 👋'
+
+    print-var-in-pwsh:
+        runs-on: windows-latest
+        needs:
+            - say-surf-in-pwsh
+        steps:
+            - name: Print PWSH $Vars
+              run: |
+                  $GITHUB_ENV
+                  $GITHUB_OUTPUT
+
+            - name: Print Variables
+              run: |
+                  $output = "${{ needs.say-surf-in-pwsh.outputs.volume }}"
+                  Write-Host "從上一個 Job 讀取到的 Volume 變數: $output"
+    staging-environment:
+        runs-on: ubuntu-24.04
+        environment: staging
+        env:
+            # Inject repository-level secret & variable into the shell
+            EXAMPLE_REPOSITORY_SECRET: ${{ secrets.EXAMPLE_REPOSITORY_SECRET }}
+            EXAMPLE_REPOSITORY_VARIABLE: ${{ vars.EXAMPLE_REPOSITORY_VARIABLE }}
+            # Inject environment-level items into the shell
+            EXAMPLE_ENVIRONMENT_SECRET: ${{ secrets.EXAMPLE_ENVIRONMENT_SECRET }}
+            EXAMPLE_ENVIRONMENT_VARIABLE: ${{ vars.EXAMPLE_ENVIRONMENT_VARIABLE }}
+        steps:
+            - name: Inspect values inside job
+              run: |
+                  echo "Repo secret (masked): $EXAMPLE_REPOSITORY_SECRET"
+                  echo "Repo variable: $EXAMPLE_REPOSITORY_VARIABLE"
+                  echo "Env secret (masked): $EXAMPLE_ENVIRONMENT_SECRET"
+                  echo "Env variable: $EXAMPLE_ENVIRONMENT_VARIABLE"
+
+    production-environment:
+        runs-on: ubuntu-24.04
+        environment: production
+        env:
+            # Inject repository-level secret & variable into the shell
+            EXAMPLE_REPOSITORY_SECRET: ${{ secrets.EXAMPLE_REPOSITORY_SECRET }}
+            EXAMPLE_REPOSITORY_VARIABLE: ${{ vars.EXAMPLE_REPOSITORY_VARIABLE }}
+            # Inject environment-level items into the shell
+            EXAMPLE_ENVIRONMENT_SECRET: ${{ secrets.EXAMPLE_ENVIRONMENT_SECRET }}
+            EXAMPLE_ENVIRONMENT_VARIABLE: ${{ vars.EXAMPLE_ENVIRONMENT_VARIABLE }}
+        steps:
+            - name: Inspect values inside job
+              run: |
+                  echo "Repo secret (masked):    $EXAMPLE_REPOSITORY_SECRET"
+                  echo "Repo variable:           $EXAMPLE_REPOSITORY_VARIABLE"
+                  echo "Env secret (masked):     $EXAMPLE_ENVIRONMENT_SECRET"
+                  echo "Env variable:            $EXAMPLE_ENVIRONMENT_VARIABLE"
