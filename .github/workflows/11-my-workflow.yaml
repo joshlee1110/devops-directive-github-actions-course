@@ -28,4 +28,4 @@ jobs:
 
               with:
                   name: nextjs-artifact
-                  path: ./tsconfig.json
+                  path: ./*.json
