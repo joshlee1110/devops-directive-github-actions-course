@@ -1,0 +1,11 @@
+name: Runner Type
+on:
+    workflow_dispatch:
+jobs:
+    github-hosted-windows-vm:
+        name: windows
+        runs-on: windows-2022
+        steps:
+            - name: pwsh
+              run: |
+                  $PSVersionTable
