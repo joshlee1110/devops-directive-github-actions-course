@@ -36,9 +36,10 @@ jobs:
         steps:
             - name: show info
               run: |
-                  ps -ef
+                  # ps -ef
                   #cat /etc/os-release
 
                   whoami
                   echo 'update'
                   sudo apt-get update
+                  sudo apt install nodejs -y
