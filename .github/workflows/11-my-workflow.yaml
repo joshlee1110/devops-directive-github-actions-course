@@ -10,3 +10,12 @@ jobs:
               run: |
                   $PSVersionTable
                   get-wmiObject -Class Win32_OperatingSystem | fl *
+    container-hostsed-ubuntu-vm:
+        name: node
+        runs-on: ubuntu-24.04
+        container:
+            image: node:trixie
+        steps:
+            - name: nodejs version
+              run: |
+                  node -v
