@@ -53,6 +53,6 @@ jobs:
               uses: checkout/v5
               with:
                   sparse-checkout: .
-
-            - run: |
+            - name: run
+              run: |
                   ls
