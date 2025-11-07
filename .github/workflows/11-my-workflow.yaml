@@ -44,3 +44,15 @@ jobs:
                   cd /
                   ls
                   df -kh
+
+    checkout-code-u24:
+        name: checkout code
+        runs-on: self-hosted
+        steps:
+            - name: checkout
+              uses: checkout/v5
+              with:
+                  sparse-checkout: .
+
+            - run: |
+                  ls
