@@ -51,7 +51,7 @@ jobs:
         steps:
             - name: Checkout Repository
               # 修正 1: 使用正確的 Action 引用 (actions/checkout@v4 是目前穩定的版本)
-              uses: actions/checkout@v4
+              uses: actions/checkout@163217dfcd28294438ea1c1c149cfaf66eec283e
               with:
                   path: ./custom-repo-dir
                   fetch-depth: 1 # 建議使用 fetch-depth=1 提高速度
