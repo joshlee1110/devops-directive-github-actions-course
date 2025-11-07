@@ -49,10 +49,14 @@ jobs:
         name: checkout code
         runs-on: self-hosted
         steps:
-            - name: checkout
-              uses: checkout/v5
+            - name: Checkout Repository
+              # 修正 1: 使用正確的 Action 引用 (actions/checkout@v4 是目前穩定的版本)
+              uses: actions/checkout@v4
               with:
-                  sparse-checkout: .
-            - name: run
+                  # 修正 2: 移除 'sparse-checkout: .'
+                  # 除非您正在使用稀疏結帳來限制下載文件，否則不需要此參數。
+                  # 此外，如果 sparse-checkout 啟用，它的值應該是路徑列表，而不是單獨的點 '.'
+                  fetch-depth: 1 # 建議使用 fetch-depth=1 提高速度
+            - name: Run Directory Listing
               run: |
                   ls
