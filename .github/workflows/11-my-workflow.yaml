@@ -65,7 +65,8 @@ jobs:
                   # 假設您在該目錄內執行一些操作
                   cd ./custom-repo-dir
                   # ... 您的構建/測試命令 ...
-                  ls
+                  echo "Show in the custom directory............."
+                  pwd
             - name:
                   Clean up working directory
                   # 使用 'always()' 確保無論 Job 成功或失敗都會執行清理
